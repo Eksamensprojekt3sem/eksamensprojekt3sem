@@ -76,7 +76,7 @@ Svar sådan:
 | Spørgsmål | Svar |
 |-----------|------|
 | Where do you use GitHub? | **GitHub.com** |
-| Preferred protocol for Git operations? | **HTTPS** |
+| Preferred protocol for Git operations? | **SSH** |
 | Authenticate Git with your GitHub credentials? | **Yes** |
 | How would you like to authenticate? | **Login with a web browser** |
 
