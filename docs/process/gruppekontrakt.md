@@ -12,7 +12,7 @@
 | Navn | Rolle | Brugernavn |
 |------|-------|------------|
 | Marcus | Product Owner | @MFWahlgren |
-| Adam | Scrum Master | @AdamJesLevy |
+| Adam | Scrum Master | @AdamLevy2001 |
 | Jama | Developer | @jama2pac |
 | Mathias | Developer | @maho0012 |
 
