@@ -1,6 +1,6 @@
 # Udviklingsmodel
 
-**Valg:** Scrum, som er en inkrementel model (Incremental). Vi leverer i afgrænsede increments (sprints), hvor hvert increment bygger videre på det forrige. De første increments fungerer samtidig som en slags prototype, der hjælper os med at afklare kravene til de næste.
+**Valg:** Scrum (tilpasset vores projekt), som er en inkrementel model (Incremental). Vi leverer i afgrænsede increments (sprints), hvor hvert increment bygger videre på det forrige. De første increments fungerer samtidig som en slags prototype, der hjælper os med at afklare kravene til de næste.
 
 ## Hvorfor passer modellen til vores projekt?
 
