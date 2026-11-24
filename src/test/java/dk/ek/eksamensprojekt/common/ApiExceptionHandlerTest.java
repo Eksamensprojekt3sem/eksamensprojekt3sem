@@ -46,6 +46,7 @@ public class ApiExceptionHandlerTest {
         ProblemDetail result = handler.invalid(exception);
 
         // Assert
-        assertThat(result.getStatus()).isEqualTo(400);
+        assertThat(result.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+        assertThat(result.getDetail()).isEqualTo("Invalid member data");
     }
 }
