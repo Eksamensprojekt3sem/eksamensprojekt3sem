@@ -44,10 +44,10 @@ Hver person gør dette:
 - [x] `gh auth login`
 - [x] Klon repoet:
   ```bash
-  gh repo clone <org>/<repo>
-  cd <repo>
+  gh repo clone Eksamensprojekt3sem/eksamensprojekt3sem
+  cd eksamensprojekt3sem
   ```
-- [x] Prøv hele flowet på et lille testissue: opret issue (GitHub) → `gh issue develop` → commit → `gh pr create --base main` → review og merge (GitHub). Slet bagefter.
+- [x] Prøv hele flowet på et lille testissue: opret issue (GitHub) → `gh issue develop` → commit → `gh pr create --web` → review og merge (GitHub). Slet bagefter.
 
 **Output:** Alle kan det samme flow. (Det er vores *SCM-proces* i praksis.)
 
@@ -79,12 +79,12 @@ Hver person gør dette:
 
 Mål: et **"walking skeleton"** – den tyndeste mulige gennemgang af hele systemet, der kører.
 
-- [ ] Opret Spring Boot-projekt (Spring Initializr) med afhængigheder aftalt i gruppen.
-- [ ] Opret **package by feature** med tom struktur (inkl. `<Feature>Api`) → [02-coding-standards.md](02-coding-standards.md)
-- [ ] Opret `common/` med `ApiExceptionHandler` og de tre exceptions (`NotFoundException`, `ConflictException`, `InvalidInputException`).
+- [x] Opret Spring Boot-projekt (Spring Initializr) med afhængigheder aftalt i gruppen.
+- [x] Opret **package by feature** med tom struktur (inkl. `<Feature>Api`) → [02-coding-standards.md](02-coding-standards.md)
+- [x] Opret `common/` med `ApiExceptionHandler` og de tre exceptions (`NotFoundException`, `ConflictException`, `InvalidInputException`).
 - [ ] Forbind til database (lokalt – fx H2 eller MySQL i Docker). Brug `application.properties` med pladsholdere (fx `${DB_URL}`), og læg de rigtige værdier i `.env` (står i `.gitignore`). `.env.example` med samme nøgler, men uden værdier, ligger i Git; **ingen hemmeligheder i Git.**
 - [ ] Én lille "hello"-feature igennem alle lag (entity → repository → service → controller → visning) + 1 test.
-- [ ] **Build-tjek** (GitHub Actions kører `mvn verify` på hver PR), hvis I har tid/behov.
+- [ ] **Build-tjek** (GitHub Actions kører `./mvnw verify` på hver PR), hvis I har tid/behov.
 - [ ] Alle kan køre projektet lokalt efter at have læst `README.md`.
 
 **Output:** Kørende skelet på `main`, tagget `sprint-0`.
@@ -105,7 +105,7 @@ Mål: et **"walking skeleton"** – den tyndeste mulige gennemgang af hele syste
 
 ## Definition of Ready (en story må kun komme i sprintet, hvis …)
 
-- [ ] Den er skrevet som *As a … I want … so that …*
+- [ ] Den er skrevet som *Som … vil jeg … så …*
 - [ ] Den har acceptkriterier
 - [ ] Den er estimeret
 - [ ] Den er prioriteret
@@ -115,7 +115,7 @@ Mål: et **"walking skeleton"** – den tyndeste mulige gennemgang af hele syste
 
 - [ ] Koden følger vores [coding standards](02-coding-standards.md)
 - [ ] Der er skrevet/opdateret tests, og de er grønne
-- [ ] Koden bygger lokalt (`mvn verify`)
+- [ ] Koden bygger lokalt (`./mvnw verify`)
 - [ ] PR er reviewet og godkendt af mindst 1 anden
 - [ ] Acceptkriterierne er opfyldt og tjekket af en anden end udvikleren
 - [ ] PR er merget til `main` og branchen er slettet
