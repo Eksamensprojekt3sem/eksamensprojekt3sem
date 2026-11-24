@@ -1,4 +1,7 @@
 FROM nginx:alpine
+
+RUN rm -rf /usr/share/nginx/html/*
+
 COPY nginx/nginx.conf /etc/nginx/conf.d/default.conf
-COPY index.html router.js /usr/share/nginx/html/
+COPY src/ /usr/share/nginx/html/
 EXPOSE 80

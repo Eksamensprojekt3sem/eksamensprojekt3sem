@@ -1,3 +1,5 @@
+import { showGreetings } from "../hello/hello-list.js";
+
 const router = new Navigo("/");
 
 async function render(pageComponent) {
@@ -8,13 +10,17 @@ async function render(pageComponent) {
     router.updatePageLinks();
 }
 
-function HomePage() {
+async function HomePage() {
     const div = document.createElement("div");
     const h1 = document.createElement("h1");
     h1.textContent = "Velkommen til Hokuto-Kai";
     const p = document.createElement("p");
     p.textContent = "Her kommer klubbens nye system.";
-    div.append(h1, p);
+
+    const greetings = document.createElement("div");
+    await showGreetings(greetings);
+
+    div.append(h1, p, greetings);
     return div;
 }
 
