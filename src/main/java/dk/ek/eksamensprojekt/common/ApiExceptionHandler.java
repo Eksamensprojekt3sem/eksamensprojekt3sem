@@ -28,7 +28,7 @@ class ApiExceptionHandler {
     ProblemDetail invalid(InvalidInputException exception) {
         return ProblemDetail.forStatusAndDetail(
                 HttpStatus.BAD_REQUEST,
-                "Ugyldige oplysninger."
+                exception.getMessage()
         );
     }
 }
