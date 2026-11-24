@@ -1,26 +1,36 @@
-// Maps a hash route to the id of the section that shows it.
-// New features add one line here.
-const ROUTES = {
-    '/': 'home-view'
-};
+const router = new Navigo("/");
 
-const NOT_FOUND_VIEW = 'not-found-view';
+async function render(pageComponent) {
+    const app = document.querySelector("#app");
+    const el = await pageComponent();
 
-function getCurrentRoute() {
-    return window.location.hash.slice(1) || '/';
+    app.replaceChildren(el);
+    router.updatePageLinks();
 }
 
-
-function showView(viewId) {
-    document.querySelectorAll('#app > section').forEach(section => {
-        section.hidden = section.id !== viewId;
-    });
+function HomePage() {
+    const div = document.createElement("div");
+    const h1 = document.createElement("h1");
+    h1.textContent = "Velkommen til Hokuto-Kai";
+    const p = document.createElement("p");
+    p.textContent = "Her kommer klubbens nye system.";
+    div.append(h1, p);
+    return div;
 }
 
-function router() {
-    const viewId = ROUTES[getCurrentRoute()] ?? NOT_FOUND_VIEW;
-    showView(viewId);
+function NotFoundPage() {
+    const div = document.createElement("div");
+    const h1 = document.createElement("h1");
+    h1.textContent = "Siden findes ikke";
+    const a = document.createElement("a");
+    a.href = "/";
+    a.textContent = "Gå til forsiden";
+    a.setAttribute("data-navigo", "");
+    div.append(h1, a);
+    return div;
 }
 
-window.addEventListener('hashchange', router);
-router();
+router
+    .on("/", () => render(HomePage))
+    .notFound(() => render(NotFoundPage))
+    .resolve();
