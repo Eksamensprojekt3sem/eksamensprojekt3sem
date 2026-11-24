@@ -33,7 +33,8 @@ public class ApiExceptionHandlerTest {
         ProblemDetail result = handler.conflict(exception);
 
         // Assert
-        assertThat(result.getStatus()).isEqualTo(409);
+        assertThat(result.getStatus()).isEqualTo(HttpStatus.CONFLICT.value());
+        assertThat(result.getDetail()).isEqualTo("Member already exists");
     }
 
     @Test
