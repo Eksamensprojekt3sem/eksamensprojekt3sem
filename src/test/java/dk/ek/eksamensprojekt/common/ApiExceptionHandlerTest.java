@@ -21,6 +21,7 @@ public class ApiExceptionHandlerTest {
 
         // Assert
         assertThat(result.getStatus()).isEqualTo(HttpStatus.NOT_FOUND.value());
+        assertThat(result.getDetail()).isEqualTo("Member not found");
     }
 
     @Test
