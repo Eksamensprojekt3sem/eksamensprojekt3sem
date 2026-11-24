@@ -12,7 +12,7 @@ class ApiExceptionHandler {
     ProblemDetail notFound(NotFoundException exception) {
         return ProblemDetail.forStatusAndDetail(
                 HttpStatus.NOT_FOUND,
-                "Ressourcen blev ikke fundet."
+                exception.getMessage()
         );
     }
 
