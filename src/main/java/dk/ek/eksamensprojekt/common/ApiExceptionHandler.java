@@ -20,7 +20,7 @@ class ApiExceptionHandler {
         ProblemDetail conflict(ConflictException exception) {
             return ProblemDetail.forStatusAndDetail(
                     HttpStatus.CONFLICT,
-                    "Handlingen er i konflikt med de eksisterende oplysninger."
+                    exception.getMessage()
             );
         }
 
