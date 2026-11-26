@@ -3,16 +3,62 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hokuto-Kai Karate</title>
+    <title>Hokuto-Kai</title>
+    <link rel="icon" href="/img/hokuto-kai-maerke.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="/common/app.css">
 </head>
 <body>
-    <nav class="site-nav">
-        <a href="/" data-navigo>Forside</a>
-    </nav>
+<a class="skip-link" href="#app">Spring til indhold</a>
 
-    <main id="app"></main>
+<div class="app">
+    <aside class="sidebar" id="sidebar">
+        <a class="sidebar__brand" href="/" data-navigo>
+            <img class="brand-mark" src="/img/hokuto-kai-maerke.svg" alt="">
+            <span class="brand-name">Hokuto-Kai<span class="brand-sub">Medlemssystem</span></span>
+        </a>
+        <nav>
+            <ul class="nav" id="nav"></ul>
+        </nav>
 
-<script type="module" src="/common/router.js"></script>
+        <!-- Log ud på mobil. På computer ligger knappen i topbaren -->
+        <div class="sidebar__footer">
+            <button class="btn btn--outline btn--block logout-button" type="button">
+                <svg class="icon">
+                    <use href="/img/icons.svg#i-log-out"/>
+                </svg>
+                Log ud
+            </button>
+        </div>
+    </aside>
+
+    <div class="scrim" id="scrim" hidden></div>
+
+    <div class="main">
+        <header class="topbar">
+            <button class="btn btn--ghost btn--icon menu-toggle" type="button" id="menu-toggle" title="Menu">
+                <svg class="icon">
+                    <use href="/img/icons.svg#i-menu"/>
+                </svg>
+            </button>
+            <span class="topbar__brand">
+                <img class="brand-mark" src="/img/hokuto-kai-maerke.svg" alt="">
+                <span class="brand-name">Hokuto-Kai<span class="brand-sub">Medlemssystem</span></span>
+            </span>
+            <div class="topbar__actions">
+                <button class="btn btn--outline logout-button" type="button">
+                    <svg class="icon">
+                        <use href="/img/icons.svg#i-log-out"/>
+                    </svg>
+                    Log ud
+                </button>
+            </div>
+        </header>
+        <main id="app" class="page container" tabindex="-1"></main>
+    </div>
+</div>
+
 <script src="https://unpkg.com/navigo@8.11.1/lib/navigo.min.js"></script>
+<script type="module" src="/common/router.js"></script>
+<script type="module" src="/common/shell.js"></script>
 </body>
 </html>
