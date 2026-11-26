@@ -1,6 +1,7 @@
 package dk.ek.eksamensprojekt.account;
 
 import dk.ek.eksamensprojekt.common.ConflictException;
+import dk.ek.eksamensprojekt.common.InvalidInputException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
@@ -49,6 +50,41 @@ class AccountServiceTest {
 
         assertThatThrownBy(() -> accountService.register(request))
                 .isInstanceOf(ConflictException.class);
+
+        verify(accountRepository, never()).save(any());
+    }
+
+    @Test
+    void register_saveAccountwithTheRightRole() {
+
+        when(passwordEncoder.encode("Hemmelig123")).thenReturn("hashed");
+
+        accountService.register(new RegisterRequest("marcus@example.com", "Hemmelig123", Role.PARENT));
+        ArgumentCaptor<Account> captor = ArgumentCaptor.forClass(Account.class);
+
+        verify(accountRepository).save(captor.capture());
+        assertThat(captor.getValue().getPasswordHash()).isEqualTo("hashed");
+        assertThat(captor.getValue().getRole()).isEqualTo(Role.PARENT);
+    }
+
+    @Test
+    void register_invalidRoleAdmin_throwsInvalidInput() {
+
+        RegisterRequest request = new RegisterRequest("marcus@example.com", "Hemmelig123", Role.ADMIN);
+
+        assertThatThrownBy(() -> accountService.register(request))
+                .isInstanceOf(InvalidInputException.class);
+
+        verify(accountRepository, never()).save(any());
+    }
+
+    @Test
+    void register_invalidRoleInstructor_throwsInvalidInput() {
+
+        RegisterRequest request = new RegisterRequest("marcus@example.com", "seacret123", Role.INSTRUCTOR);
+
+        assertThatThrownBy(() -> accountService.register(request))
+                .isInstanceOf(InvalidInputException.class);
 
         verify(accountRepository, never()).save(any());
     }
