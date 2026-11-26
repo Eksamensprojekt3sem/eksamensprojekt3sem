@@ -2,15 +2,15 @@ package dk.ek.eksamensprojekt.account;
 
 import dk.ek.eksamensprojekt.common.ConflictException;
 import dk.ek.eksamensprojekt.common.InvalidInputException;
+import dk.ek.eksamensprojekt.common.NotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Set;
 
-
 @Service
-class AccountService {
+class AccountService implements AccountApi {
 
     private static final Set<Role> VALID_ROLES = Set.of(Role.MEMBER, Role.PARENT);
     private final AccountRepository accountRepository;
@@ -19,6 +19,14 @@ class AccountService {
     AccountService(AccountRepository accountRepository, PasswordEncoder passwordEncoder) {
         this.accountRepository = accountRepository;
         this.passwordEncoder = passwordEncoder;
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Long getAccountId(String email) {
+        return accountRepository.findByEmail(Account.normalizeEmail(email))
+                .orElseThrow(() -> new NotFoundException("Kontoen findes ikke"))
+                .getId();
     }
 
     @Transactional
