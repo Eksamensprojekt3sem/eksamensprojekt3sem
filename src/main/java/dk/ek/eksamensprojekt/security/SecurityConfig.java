@@ -20,7 +20,9 @@ class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/error", "/api/login").permitAll()
                         .requestMatchers(HttpMethod.GET,
-                                "/", "/login", "/index.html", "/favicon.ico", "/assets/**").permitAll()
+                                "/", "/login", "/index.html", "/favicon.ico", "/assets/**",
+                                "/common/**", "/hello/**", "/img/**",
+                                "/api/greetings").permitAll()
                         // plads til nye endpoints
                         .anyRequest().denyAll())
                 .formLogin(form -> form
