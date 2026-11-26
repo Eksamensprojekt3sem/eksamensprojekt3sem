@@ -23,6 +23,7 @@ class SecurityConfig {
                                 "/", "/login", "/index.html", "/favicon.ico", "/assets/**",
                                 "/common/**", "/hello/**", "/img/**",
                                 "/api/greetings").permitAll()
+                        .requestMatchers("/api/me").authenticated()
                         // plads til nye endpoints
                         .anyRequest().denyAll())
                 .formLogin(form -> form
