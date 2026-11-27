@@ -120,7 +120,7 @@ function buildSignupNote() {
     const link = document.createElement("a");
     link.textContent = "Opret konto";
 
-    link.href = "https://www.google.com/url?sa=t&source=web&rct=j&opi=89978449&url=https://www.youtube.com/watch%3Fv%3DxvFZjo5PgG0&ved=2ahUKEwiqz83V-aeYAxWfUlUIHdY6Dy4QwqsBegQIIxAB&usg=AOvVaw1bR_FN-SnfIGtKD3fjAA5P";
+    link.href = "kommer senere";
     link.target = "_blank";
     link.rel = "noopener noreferrer";
 
