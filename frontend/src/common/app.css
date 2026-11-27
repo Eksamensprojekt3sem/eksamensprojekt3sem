@@ -364,6 +364,11 @@ a:hover {
     grid-template-columns: minmax(0, 1fr);
 }
 
+.app--auth .page {
+    padding: 0;
+    max-width: none;
+}
+
 .sidebar {
     --focus-ring: 0 0 0 2px var(--hk-ink);
     background: var(--hk-ink);
