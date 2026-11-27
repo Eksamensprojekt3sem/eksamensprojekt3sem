@@ -38,19 +38,11 @@ class Member {
         this.beltGrade = beltGrade;
     }
 
-    static Member create(
-            Long accountId,
-            String firstName,
-            String lastName,
-            BeltGrade beltGrade
-    ) {
-
-        return new Member(
-                accountId,
-                firstName,
-                lastName,
-                beltGrade
-        );
+    static Member create(Long accountId,
+                         String firstName,
+                         String lastName,
+                         BeltGrade beltGrade) {
+        return new Member(accountId, firstName, lastName, beltGrade);
     }
 
     public Long getId() {
