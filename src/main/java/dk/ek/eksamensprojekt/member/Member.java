@@ -45,23 +45,23 @@ class Member {
         return new Member(accountId, firstName, lastName, beltGrade);
     }
 
-    public Long getId() {
+     Long getId() {
         return id;
     }
 
-    public Long getAccountId() {
+    Long getAccountId() {
         return accountId;
     }
 
-    public String getFirstName() {
+    String getFirstName() {
         return firstName;
     }
 
-    public String getLastName() {
+    String getLastName() {
         return lastName;
     }
 
-    public BeltGrade getBeltGrade() {
+    BeltGrade getBeltGrade() {
         return beltGrade;
     }
 }
