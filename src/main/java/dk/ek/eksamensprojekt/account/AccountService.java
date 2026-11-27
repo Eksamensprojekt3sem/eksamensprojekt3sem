@@ -12,7 +12,7 @@ import java.util.Set;
 @Service
 class AccountService implements AccountApi {
 
-    private static final Set<Role> VALID_ROLES = Set.of(Role.MEMBER, Role.PARENT);
+    private static final Set<Role> SELF_REGISTRABLE_ROLES = Set.of(Role.MEMBER, Role.PARENT);
     private final AccountRepository accountRepository;
     private final PasswordEncoder passwordEncoder;
 
