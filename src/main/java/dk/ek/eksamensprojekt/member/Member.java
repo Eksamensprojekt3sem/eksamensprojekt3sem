@@ -6,7 +6,7 @@ import jakarta.persistence.*;
 @Table(name = "members")
 class Member {
 
-    private static final int NAME_MAX_LENGTH = 100;
+    static final int NAME_MAX_LENGTH = 100;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
