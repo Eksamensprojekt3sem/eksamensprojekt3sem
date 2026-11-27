@@ -19,17 +19,13 @@ class SecurityConfig {
                 .csrf(CsrfConfigurer::spa)
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/error", "/api/login").permitAll()
-                        .requestMatchers(HttpMethod.GET,
-                                "/", "/login", "/index.html", "/favicon.ico", "/assets/**",
-                                "/common/**", "/hello/**", "/img/**",
-                                "/api/greetings").permitAll()
-                        .requestMatchers("/api/me").authenticated()
                         .requestMatchers(HttpMethod.POST, "/api/register").permitAll()
+                        .requestMatchers("/api/me").authenticated()
                         // plads til nye endpoints
                         .anyRequest().denyAll())
                 .formLogin(form -> form
-                        .loginPage("/login")
                         .loginProcessingUrl("/api/login")
+                        .usernameParameter("email")
                         .successHandler((req, res, auth) -> res.setStatus(HttpStatus.NO_CONTENT.value()))
                         .failureHandler((req, res, ex) -> res.setStatus(HttpStatus.UNAUTHORIZED.value())))
                 .logout(logout -> logout
