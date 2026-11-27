@@ -1,6 +1,7 @@
 package dk.ek.eksamensprojekt.account;
 
 import dk.ek.eksamensprojekt.common.ConflictException;
+import dk.ek.eksamensprojekt.common.InvalidInputException;
 import dk.ek.eksamensprojekt.common.NotFoundException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -24,19 +25,14 @@ class AccountServiceTest {
     @Mock PasswordEncoder passwordEncoder;
     @InjectMocks AccountService accountService;
 
-    // ---- getAccountId ----
-
     @Test
     void findTheAccountIdIgnoringCaseAndSpaces() {
-        // Arrange: a fake account with a known id, since only the database sets real ids
         Account account = mock(Account.class);
         when(account.getId()).thenReturn(7L);
         when(accountRepository.findByEmail("instructor@example.dk")).thenReturn(Optional.of(account));
 
-        // Act: capital letters and spaces on purpose
         Long id = accountService.getAccountId(" Instructor@example.Dk ");
 
-        // Assert
         assertThat(id).isEqualTo(7L);
     }
 
@@ -47,8 +43,6 @@ class AccountServiceTest {
         assertThatThrownBy(() -> accountService.getAccountId("ukendt@example.dk"))
                 .isInstanceOf(NotFoundException.class);
     }
-
-    // ---- register ----
 
     @Test
     void register_saveAccountWithHashedPassword() {
@@ -74,6 +68,41 @@ class AccountServiceTest {
 
         assertThatThrownBy(() -> accountService.register(request))
                 .isInstanceOf(ConflictException.class);
+
+        verify(accountRepository, never()).save(any());
+    }
+
+    @Test
+    void register_saveAccountwithTheRightRole() {
+
+        when(passwordEncoder.encode("hemmelig123")).thenReturn("hashed");
+
+        accountService.register(new RegisterRequest("marcus@example.com", "hemmelig123", Role.PARENT));
+        ArgumentCaptor<Account> captor = ArgumentCaptor.forClass(Account.class);
+
+        verify(accountRepository).save(captor.capture());
+        assertThat(captor.getValue().getPasswordHash()).isEqualTo("hashed");
+        assertThat(captor.getValue().getRole()).isEqualTo(Role.PARENT);
+    }
+
+    @Test
+    void register_invalidRoleAdmin_throwsInvalidInput() {
+
+        RegisterRequest request = new RegisterRequest("marcus@example.com", "Hemmelig123", Role.ADMIN);
+
+        assertThatThrownBy(() -> accountService.register(request))
+                .isInstanceOf(InvalidInputException.class);
+
+        verify(accountRepository, never()).save(any());
+    }
+
+    @Test
+    void register_invalidRoleInstructor_throwsInvalidInput() {
+
+        RegisterRequest request = new RegisterRequest("marcus@example.com", "seacret123", Role.INSTRUCTOR);
+
+        assertThatThrownBy(() -> accountService.register(request))
+                .isInstanceOf(InvalidInputException.class);
 
         verify(accountRepository, never()).save(any());
     }
