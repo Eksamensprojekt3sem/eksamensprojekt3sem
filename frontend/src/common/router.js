@@ -1,4 +1,5 @@
 import { pages, NotFoundPage } from "./pages.js";
+import { leaveAuthLayout } from "../auth/login-page.js";
 
 // Routeren bruger Navigo, som er indlæst som script i index.html.
 // Eksporteres, så andre filer (fx shell.js og api.js) kan skifte side.
@@ -39,6 +40,8 @@ function markActiveLink() {
 // Viser en side i #app
 async function render(pageComponent) {
     const app = document.querySelector("#app");
+
+    leaveAuthLayout();
     const el = await pageComponent(); // siden bygges (nogle venter på data)
 
     app.replaceChildren(el); // erstat det gamle indhold med den nye side
