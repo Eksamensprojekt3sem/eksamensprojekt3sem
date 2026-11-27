@@ -24,6 +24,7 @@ class SecurityConfig {
                                 "/common/**", "/hello/**", "/img/**",
                                 "/api/greetings").permitAll()
                         .requestMatchers("/api/me").authenticated()
+                        .requestMatchers(HttpMethod.POST, "/api/register").permitAll()
                         // plads til nye endpoints
                         .anyRequest().denyAll())
                 .formLogin(form -> form
