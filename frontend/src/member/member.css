@@ -1,0 +1,6 @@
+/* ---------- Medlemsside (US-005) ---------- */
+
+/* Bæltet må ikke strække sig i fuld bredde inde i .stack */
+.member-belt {
+    align-self: flex-start;
+}
