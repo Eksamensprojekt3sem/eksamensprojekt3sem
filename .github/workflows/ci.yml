@@ -26,3 +26,4 @@ jobs:
         env:
           SEED_ADMIN_PASSWORD: ci-admin-password
           SEED_INSTRUCTOR_PASSWORD: ci-instructor-password
+          SEED_MEMBER_PASSWORD: ci-member-password
