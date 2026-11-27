@@ -14,6 +14,7 @@
     --hk-surface: #ffffff;
     --hk-surface-2: #f1eeea;
     --hk-red-light: #ff6b6b;
+    --hk-red-tint: #fbeaea;
 
     --color-text: var(--hk-ink);
     --color-text-2: var(--hk-ink-2);
@@ -32,9 +33,22 @@
     --st-info-fg: #1b4378;
     --st-info-bg: #eaf1fa;
     --st-info-bd: #bcd1ea;
+    --st-neutral-fg: #3a3633;
+    --st-neutral-bg: #eeebe7;
+    --st-neutral-bd: #d9d4ce;
+
+    /* Bæltefarver (supplerer teksten, erstatter den ikke) */
+    --belt-white: #fff;
+    --belt-yellow: #f2c230;
+    --belt-orange: #ee8a2b;
+    --belt-green: #2f9a58;
+    --belt-purple: #7b3fa3;
+    --belt-brown: #7a4a2a;
+    --belt-black: #14110f;
 
     /* Fira Sans er ikke indlæst endnu, så systemfonten bruges, indtil den er */
     --font-sans: "Fira Sans", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    --fs-xs: 0.75rem;
     --fs-sm: 0.875rem;
     --fs-base: 1rem;
     --fs-lg: 1.125rem;
@@ -58,11 +72,13 @@
     --r-lg: 10px;
     --r-pill: 999px;
     --sh-sm: 0 1px 2px rgba(20, 17, 15, 0.06);
+    --sh-lg: 0 8px 24px rgba(20, 17, 15, 0.18);
 
     --container: 75rem;
     --container-narrow: 46rem;
     --sidebar-w: 16rem;
     --topbar-h: 3.5rem;
+    --touch: 2.75rem; /* mindste trykflade på mobil (44px) */
 
     --z-sticky: 10;
     --z-scrim: 30;
@@ -71,6 +87,7 @@
     --t-fast: 120ms;
     --t-base: 180ms;
     --ease: cubic-bezier(0.2, 0, 0, 1);
+    --t: 150ms ease-out; /* overgange i de nyere komponenter */
 
     --focus-ring: 0 0 0 2px #fff;
 }
@@ -95,6 +112,11 @@ body {
     -webkit-font-smoothing: antialiased;
 }
 
+img, svg {
+    max-width: 100%;
+    display: block;
+}
+
 button, input, select, textarea {
     font: inherit;
     color: inherit;
@@ -113,18 +135,18 @@ h1, h2, h3 {
 }
 
 h1 {
-    font-size: var(--fs-3xl);
-}
-
-h2 {
     font-size: var(--fs-2xl);
 }
 
-h3 {
+h2 {
     font-size: var(--fs-xl);
 }
 
-p {
+h3 {
+    font-size: var(--fs-lg);
+}
+
+p, dl, dd {
     margin: 0;
 }
 
@@ -195,6 +217,16 @@ a:hover {
     stroke-linejoin: round;
 }
 
+.icon--sm {
+    width: 1rem;
+    height: 1rem;
+}
+
+.icon--lg {
+    width: 1.5rem;
+    height: 1.5rem;
+}
+
 /* ---------- 3. Layout ---------- */
 .container {
     width: 100%;
@@ -214,7 +246,17 @@ a:hover {
 }
 
 .page {
-    padding-block: var(--sp-5) var(--sp-8);
+    flex: 1 0 auto;
+    width: 100%;
+    max-width: 90rem;
+    margin-inline: auto;
+    padding: var(--sp-5) var(--sp-4) var(--sp-8);
+}
+
+@media (min-width: 720px) {
+    .page {
+        padding-inline: var(--sp-6);
+    }
 }
 
 .stack {
@@ -228,11 +270,79 @@ a:hover {
 }
 
 .stack--lg {
-    gap: var(--sp-6);
+    gap: var(--sp-5);
 }
 
 .text-muted {
     color: var(--color-text-muted);
+}
+
+.text-sm {
+    font-size: var(--fs-sm);
+}
+
+.num {
+    font-variant-numeric: tabular-nums;
+}
+
+.wrap-anywhere {
+    overflow-wrap: anywhere;
+}
+
+.flex {
+    display: flex;
+}
+
+.flex-wrap {
+    flex-wrap: wrap;
+}
+
+.items-center {
+    align-items: center;
+}
+
+.justify-between {
+    justify-content: space-between;
+}
+
+.gap-2 {
+    gap: var(--sp-2);
+}
+
+.gap-3 {
+    gap: var(--sp-3);
+}
+
+.gap-4 {
+    gap: var(--sp-4);
+}
+
+.ml-auto {
+    margin-left: auto;
+}
+
+.min-w-0 {
+    min-width: 0;
+}
+
+.grid {
+    display: grid;
+    gap: var(--sp-4);
+    grid-template-columns: minmax(0, 1fr);
+    align-items: start;
+}
+
+@media (min-width: 720px) {
+    .grid--2 {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+/* liste + formular */
+@media (min-width: 960px) {
+    .grid--sidebar {
+        grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
+    }
 }
 
 /* ---------- 4. App-skal: sidebar, topbar, mobilmenu ---------- */
@@ -247,6 +357,11 @@ a:hover {
     .app {
         grid-template-columns: var(--sidebar-w) minmax(0, 1fr);
     }
+}
+
+/* Login-siden har ingen sidemenu, så kun én kolonne (sættes og fjernes af LoginPage) */
+.app--auth {
+    grid-template-columns: minmax(0, 1fr);
 }
 
 .sidebar {
@@ -370,7 +485,7 @@ a:hover {
     text-decoration: none;
     font-size: var(--fs-sm);
     font-weight: 500;
-    transition: background var(--t-fast) var(--ease);
+    transition: background var(--t);
     touch-action: manipulation;
 }
 
@@ -389,9 +504,109 @@ a:hover {
     color: var(--hk-red-light);
 }
 
+/* Aktivt menupunkt markeret med aria-current="page" (samme udseende som .is-active) */
+.nav__link[aria-current="page"] {
+    background: rgba(221, 51, 51, 0.16);
+    box-shadow: inset 0 0 0 1px rgba(255, 107, 107, 0.7);
+    color: #fff;
+}
+
+.nav__link[aria-current="page"] .icon {
+    color: #ff6b6b;
+}
+
 @media (pointer: coarse), (max-width: 720px) {
     .nav__link {
         min-height: 2.75rem;
+    }
+}
+
+/* NY – ikke i originalen: brugeren + "Log ud". ÉT element, ÉT sted i HTML (sidst i .sidebar).
+ Mobil: nederst i den åbne menu. Desktop: flyttes med CSS op i højre side af topbaren. */
+.sidebar__user {
+    margin-top: auto;
+    display: flex;
+    flex-direction: column;
+    gap: var(--sp-3);
+    padding-top: var(--sp-4);
+    border-top: 1px solid rgba(255, 255, 255, 0.14);
+}
+
+.sidebar__who {
+    display: flex;
+    align-items: center;
+    gap: var(--sp-3);
+    min-width: 0;
+}
+
+.sidebar__role {
+    display: block;
+    font-size: var(--fs-sm);
+    font-weight: 600;
+    line-height: 1.2;
+}
+
+.sidebar__name {
+    display: block;
+    font-size: var(--fs-sm);
+    color: #a8a29b;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.sidebar__user .avatar {
+    background: #3a3633;
+    color: #fff;
+}
+
+.sidebar__user .btn {
+    background: transparent;
+    color: #fff;
+    border-color: rgba(255, 255, 255, 0.5);
+}
+
+.sidebar__user .btn:hover {
+    background: rgba(255, 255, 255, 0.12);
+}
+
+@media (min-width: 960px) {
+    .sidebar__user {
+        position: fixed;
+        top: 0;
+        right: 0;
+        z-index: 41;
+        height: var(--topbar-h);
+        margin: 0;
+        padding: 0 var(--sp-4);
+        flex-direction: row;
+        align-items: center;
+        gap: var(--sp-4);
+        border: 0;
+        color: var(--hk-ink);
+    }
+
+    .sidebar__name {
+        color: var(--hk-muted);
+        max-width: 14rem;
+    }
+
+    .sidebar__user :focus-visible {
+        outline-color: var(--hk-ink);
+    }
+
+    .sidebar__user .avatar {
+        background: var(--hk-ink);
+    }
+
+    .sidebar__user .btn {
+        color: var(--hk-ink);
+        border-color: var(--hk-ink);
+    }
+
+    .sidebar__user .btn:hover {
+        background: var(--hk-ink);
+        color: #fff;
     }
 }
 
@@ -427,7 +642,7 @@ a:hover {
     align-items: center;
     gap: var(--sp-3); /* tilbage til normal afstand, nu hvor knappen ikke står ved siden af logoet */
     padding: var(--sp-2) var(--sp-4);
-    background: rgba(255, 255, 255, 0.94);
+    background: var(--hk-surface);
     backdrop-filter: blur(6px);
     border-bottom: 1px solid var(--hk-line);
 }
@@ -437,10 +652,13 @@ a:hover {
     align-items: center;
     gap: var(--sp-2);
     font-weight: 600; /* det negative margin-left er fjernet */
+    color: var(--hk-ink);
+    text-decoration: none;
 }
 
 /* Menuknappen står yderst til højre på mobil */
 .topbar .menu-toggle {
+    display: inline-flex;
     order: 1;
     margin-left: auto;
 }
@@ -479,6 +697,68 @@ a:hover {
     }
 }
 
+/* Sidehoved og brødkrummer */
+.page-header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: var(--sp-4);
+    margin-bottom: var(--sp-5);
+}
+
+.page-header p {
+    margin-top: var(--sp-1);
+    color: var(--hk-muted);
+}
+
+.breadcrumbs {
+    margin-bottom: var(--sp-3);
+    font-size: var(--fs-sm);
+}
+
+.breadcrumbs ol {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--sp-1) var(--sp-2);
+}
+
+.breadcrumbs li + li::before {
+    content: "/";
+    margin-right: var(--sp-2);
+    color: var(--hk-muted);
+}
+
+.breadcrumbs a {
+    color: var(--hk-ink-2);
+    text-decoration: none;
+}
+
+.breadcrumbs a:hover {
+    color: var(--hk-red-text);
+    text-decoration: underline;
+}
+
+.breadcrumbs [aria-current="page"] {
+    font-weight: 500;
+}
+
+/* "Tilbage til …" på undersider */
+.back-link {
+    margin: 0 0 var(--sp-3) calc(var(--sp-3) * -1);
+    color: var(--hk-ink-2);
+}
+
+@media (max-width: 720px) {
+    .topbar__brand {
+        min-height: var(--touch);
+    }
+}
+
 /* ---------- 5. Knapper ---------- */
 .btn {
     display: inline-flex;
@@ -496,7 +776,7 @@ a:hover {
     white-space: nowrap;
     background: var(--hk-surface);
     color: var(--hk-ink);
-    transition: background var(--t-fast) var(--ease), color var(--t-fast) var(--ease);
+    transition: background var(--t), color var(--t);
     touch-action: manipulation;
 }
 
@@ -535,6 +815,7 @@ a:hover {
 
 .btn--ghost:hover {
     background: var(--hk-surface-2);
+    color: var(--hk-ink);
 }
 
 .btn--danger {
@@ -545,6 +826,11 @@ a:hover {
 .btn--danger:hover {
     background: var(--st-overdue-fg);
     color: #fff;
+}
+
+.btn--sm {
+    min-height: 2rem;
+    padding: 0 var(--sp-3);
 }
 
 .btn--icon {
@@ -562,15 +848,29 @@ a:hover {
     box-shadow: none;
 }
 
-.btn[disabled] {
+.btn[disabled] .spinner {
+    border-color: var(--hk-line-strong);
+    border-top-color: var(--hk-ink-2);
+}
+
+.btn[disabled], .btn[aria-disabled="true"] {
     background: #ece8e3;
+    border-color: transparent;
     color: var(--hk-muted);
     cursor: not-allowed;
     pointer-events: none;
 }
 
+.btn-group {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--sp-2);
+}
+
 @media (pointer: coarse), (max-width: 720px) {
-    .btn {
+    .btn,
+    .btn--sm {
         min-height: 2.75rem;
     }
 
@@ -588,8 +888,66 @@ a:hover {
     min-width: 0;
 }
 
+.card__header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--sp-3);
+    padding: var(--sp-4) var(--sp-5);
+    border-bottom: 1px solid var(--hk-line);
+}
+
+.card__title {
+    font-size: var(--fs-lg);
+    font-weight: 600;
+}
+
 .card__body {
     padding: var(--sp-5);
+}
+
+.card--flush .card__body {
+    padding: 0;
+}
+
+/* NY – et afsnit nederst i et kort (fx en lille formular) */
+.card__section {
+    padding: var(--sp-4) var(--sp-5);
+    border-top: 1px solid var(--hk-line);
+}
+
+.card__meta {
+    display: flex;
+    align-items: center;
+    gap: var(--sp-1);
+    font-size: var(--fs-sm);
+    color: var(--hk-muted);
+}
+
+.card__footer {
+    display: flex;
+    flex-direction: column-reverse;
+    gap: var(--sp-2);
+    padding: var(--sp-4) var(--sp-5);
+    border-top: 1px solid var(--hk-line);
+    background: var(--hk-bg);
+    border-radius: 0 0 var(--r-lg) var(--r-lg);
+}
+
+.card__footer .btn {
+    width: 100%;
+}
+
+@media (min-width: 560px) {
+    .card__footer {
+        flex-direction: row;
+        justify-content: flex-end;
+    }
+
+    .card__footer .btn {
+        width: auto;
+    }
 }
 
 /* ---------- 7. Formularer ---------- */
@@ -603,6 +961,10 @@ a:hover {
 .label {
     font-size: var(--fs-sm);
     font-weight: 500;
+}
+
+.label .req {
+    color: var(--hk-red-text);
 }
 
 .hint {
@@ -619,7 +981,7 @@ a:hover {
     border-radius: var(--r-md);
     font-size: var(--fs-base);
     line-height: 1.5;
-    transition: border-color var(--t-fast) var(--ease);
+    transition: border-color var(--t);
 }
 
 .textarea {
@@ -650,8 +1012,173 @@ a:hover {
     color: var(--st-overdue-fg);
 }
 
+.error-msg .icon {
+    width: 1rem;
+    height: 1rem;
+    margin-top: 2px;
+}
+
+/* .form-grid--2 erstatter originalens .form-grid--name (NY navn) */
+.form-grid {
+    display: grid;
+    gap: var(--sp-5);
+    align-items: start;
+}
+
+@media (min-width: 640px) {
+    .form-grid--2 {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+.input::placeholder, .textarea::placeholder {
+    color: var(--hk-muted);
+    opacity: 1;
+}
+
+.input[aria-invalid="true"], .select[aria-invalid="true"], .textarea[aria-invalid="true"] {
+    border: 2px solid var(--st-overdue-fg);
+}
+
+.input[disabled], .select[disabled], .textarea[disabled] {
+    background: #ece8e3;
+    color: var(--hk-muted);
+    cursor: not-allowed;
+}
+
+.select {
+    appearance: none;
+    padding-right: 2.5rem;
+    cursor: pointer;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2314110f' stroke-width='2.25' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 9l7 7 7-7'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.75rem center;
+    background-size: 1rem;
+}
+
+/* Søgefelt: ikon + input */
+.search {
+    position: relative;
+    display: block;
+}
+
+.search .icon {
+    position: absolute;
+    left: var(--sp-3);
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--hk-muted);
+    pointer-events: none;
+}
+
+.search .input {
+    padding-left: 2.5rem;
+}
+
+/* Afkrydsning og radioknap. .option (NY) = radioknap i en ramme med forklaring */
+.fieldset {
+    border: 0;
+    margin: 0;
+    padding: 0;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--sp-2);
+}
+
+.legend {
+    padding: 0;
+    margin-bottom: var(--sp-1);
+    font-size: var(--fs-sm);
+    font-weight: 500;
+}
+
+.check {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--sp-3);
+    min-height: 1.75rem;
+    cursor: pointer;
+}
+
+.check input {
+    appearance: none;
+    flex: none;
+    width: 1.5rem;
+    height: 1.5rem;
+    margin: 0;
+    display: grid;
+    place-items: center;
+    border: 1.5px solid var(--hk-ink-2);
+    border-radius: var(--r-sm);
+    background: var(--hk-surface);
+    cursor: pointer;
+}
+
+.check input[type="radio"] {
+    border-radius: 50%;
+}
+
+.check input::after {
+    content: "";
+    width: 0.75rem;
+    height: 0.75rem;
+    opacity: 0;
+    background: #fff;
+    clip-path: polygon(14% 52%, 0 66%, 38% 100%, 100% 22%, 86% 8%, 38% 72%);
+}
+
+.check input[type="radio"]::after {
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: 50%;
+    clip-path: none;
+}
+
+.check input:checked {
+    background: var(--hk-red);
+    border-color: var(--hk-red);
+}
+
+.check input:checked::after {
+    opacity: 1;
+}
+
+@media (max-width: 720px) {
+    .check {
+        min-height: var(--touch);
+        align-items: center;
+    }
+}
+
+.option {
+    padding: var(--sp-3) var(--sp-4);
+    border: 1px solid var(--hk-line-strong);
+    border-radius: var(--r-md);
+    background: var(--hk-surface);
+    min-height: var(--touch);
+}
+
+.option:has(input:checked) {
+    border-color: var(--hk-red);
+    background: var(--hk-red-tint);
+}
+
+.option__text {
+    display: flex;
+    flex-direction: column;
+}
+
+.option__text strong {
+    font-weight: 600;
+}
+
 /* ---------- 8. Beskeder og spinner ---------- */
 .alert {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: var(--sp-3);
+    align-items: start;
     padding: var(--sp-3) var(--sp-4);
     border: 1px solid var(--st-info-bd);
     border-radius: var(--r-md);
@@ -677,6 +1204,24 @@ a:hover {
     border-color: var(--st-overdue-bd);
 }
 
+.alert__icon {
+    margin-top: 2px;
+}
+
+.alert__title {
+    font-weight: 600;
+}
+
+.alert__text {
+    font-size: var(--fs-sm);
+    margin-top: 2px;
+}
+
+.alert a {
+    color: inherit;
+    font-weight: 600;
+}
+
 .spinner {
     width: 1.5rem;
     height: 1.5rem;
@@ -692,7 +1237,653 @@ a:hover {
     }
 }
 
-/* ---------- 9. Reduceret bevægelse ---------- */
+/* Tilstande: spinner i knap, loading, tom liste og toast */
+.btn .spinner {
+    width: 1rem;
+    height: 1rem;
+    border-color: rgba(255, 255, 255, 0.45);
+    border-top-color: #fff;
+}
+
+/* NY */
+.loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--sp-3);
+    padding: var(--sp-6);
+    color: var(--hk-muted);
+}
+
+.empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--sp-3);
+    padding: var(--sp-7) var(--sp-5);
+    text-align: center;
+}
+
+.empty__icon {
+    display: grid;
+    place-items: center;
+    width: 3rem;
+    height: 3rem;
+    border-radius: 50%;
+    background: var(--hk-surface-2);
+    color: var(--hk-ink-2);
+}
+
+/* NY – kort besked nederst på skærmen (role="status"), fjernes af JS efter få sekunder */
+.toast {
+    position: fixed;
+    left: 50%;
+    bottom: var(--sp-5);
+    z-index: 100;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    gap: var(--sp-3);
+    width: max-content;
+    max-width: calc(100% - 2rem);
+    padding: var(--sp-3) var(--sp-4);
+    border-radius: var(--r-md);
+    background: var(--hk-ink);
+    color: #fff;
+    box-shadow: var(--sh-lg);
+    font-size: var(--fs-sm);
+    font-weight: 500;
+}
+
+.toast--success .icon {
+    color: #6fd39a;
+}
+
+.toast--danger .icon {
+    color: #ff8f85;
+}
+
+/* ---------- 9. Badges, bælte og avatar ---------- */
+.badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    min-height: 1.5rem;
+    padding: 0 0.625rem;
+    border: 1px solid var(--st-neutral-bd);
+    border-radius: var(--r-pill);
+    background: var(--st-neutral-bg);
+    color: var(--st-neutral-fg);
+    font-size: var(--fs-sm);
+    font-weight: 500;
+    line-height: 1;
+    white-space: nowrap;
+    font-variant-numeric: tabular-nums;
+}
+
+.badge .icon {
+    width: 0.875rem;
+    height: 0.875rem;
+    stroke-width: 2.25;
+}
+
+.status--active {
+    background: var(--st-active-bg);
+    color: var(--st-active-fg);
+    border-color: var(--st-active-bd);
+}
+
+.status--pending {
+    background: var(--st-pending-bg);
+    color: var(--st-pending-fg);
+    border-color: var(--st-pending-bd);
+}
+
+.status--overdue {
+    background: var(--st-overdue-bg);
+    color: var(--st-overdue-fg);
+    border-color: var(--st-overdue-bd);
+}
+
+/* NY – ikke i originalen (blå badge) */
+.status--info {
+    background: var(--st-info-bg);
+    color: var(--st-info-fg);
+    border-color: var(--st-info-bd);
+}
+
+/* Bæltegrad: .badge.belt.belt--<farve> med teksten "5. Kyu" */
+.belt {
+    background: var(--hk-surface);
+    border-color: var(--hk-line-strong);
+    color: var(--hk-ink);
+    padding-left: 0.5rem;
+}
+
+.belt::before {
+    content: "";
+    width: 0.875rem;
+    height: 0.875rem;
+    flex: none;
+    border-radius: 50%;
+    background: var(--belt, var(--belt-white));
+    border: 1px solid rgba(20, 17, 15, 0.45);
+}
+
+.belt--white {
+    --belt: var(--belt-white);
+}
+
+.belt--yellow {
+    --belt: var(--belt-yellow);
+}
+
+.belt--orange {
+    --belt: var(--belt-orange);
+}
+
+.belt--green {
+    --belt: var(--belt-green);
+}
+
+.belt--purple {
+    --belt: var(--belt-purple);
+}
+
+.belt--brown {
+    --belt: var(--belt-brown);
+}
+
+.belt--dan {
+    --belt: var(--belt-black);
+    background: var(--hk-ink);
+    border-color: var(--hk-ink);
+    color: #fff;
+}
+
+.belt--dan::before {
+    border-color: #fff;
+}
+
+/* NY – stort bælte øverst på medlemssiden */
+.belt--lg {
+    min-height: 2.25rem;
+    padding: 0 var(--sp-4) 0 var(--sp-3);
+    font-size: var(--fs-lg);
+    font-weight: 600;
+}
+
+.belt--lg::before {
+    width: 1.25rem;
+    height: 1.25rem;
+}
+
+.avatar {
+    display: inline-grid;
+    place-items: center;
+    flex: none;
+    width: 2.25rem;
+    height: 2.25rem;
+    border-radius: 50%;
+    background: #eeebe7;
+    color: var(--hk-ink);
+    font-size: var(--fs-sm);
+    font-weight: 600;
+    user-select: none;
+}
+
+.avatar--lg {
+    width: 3rem;
+    height: 3rem;
+    font-size: var(--fs-base);
+}
+
+.avatar--ink {
+    background: var(--hk-ink);
+    color: #fff;
+}
+
+/* ---------- 10. Lister og tabeller ---------- */
+/* NY – ikke i originalen: .list > .list__item (række med navn, badge, knap) */
+.list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.list__item {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--sp-2) var(--sp-3);
+    padding: var(--sp-3) var(--sp-5);
+    border-bottom: 1px solid var(--hk-line);
+}
+
+.list__item:last-child {
+    border-bottom: 0;
+}
+
+.list__main {
+    flex: 1 1 10rem;
+    min-width: 0;
+}
+
+@media (max-width: 720px) {
+    .list__item {
+        padding-inline: var(--sp-4);
+    }
+
+    .list__main a {
+        display: inline-flex;
+        align-items: center;
+        min-height: var(--touch);
+    }
+}
+
+.member {
+    display: flex;
+    align-items: center;
+    gap: var(--sp-3);
+    min-width: 0;
+}
+
+.member__name {
+    font-weight: 600;
+    color: var(--hk-ink);
+    text-decoration: none;
+}
+
+.member__name:hover {
+    text-decoration: underline;
+    color: var(--hk-ink);
+}
+
+.member__sub {
+    font-size: var(--fs-sm);
+    color: var(--hk-muted);
+    overflow-wrap: anywhere;
+}
+
+/* <dl> med label + værdi */
+.meta-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sp-2);
+    font-size: var(--fs-sm);
+}
+
+.meta-list > div {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--sp-3);
+}
+
+.meta-list dt {
+    color: var(--hk-muted);
+    font-weight: 500;
+}
+
+.meta-list dd {
+    text-align: right;
+}
+
+.table-wrap {
+    width: 100%;
+    overflow-x: auto;
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: var(--fs-sm);
+    font-variant-numeric: tabular-nums;
+}
+
+.table th, .table td {
+    padding: var(--sp-3) var(--sp-4);
+    text-align: left;
+    vertical-align: middle;
+    border-bottom: 1px solid var(--hk-line);
+}
+
+.table thead th {
+    background: var(--hk-bg);
+    font-weight: 600;
+    color: var(--hk-ink-2);
+    white-space: nowrap;
+    border-bottom-color: var(--hk-line-strong);
+}
+
+.table tbody tr:hover {
+    background: var(--hk-surface-2);
+}
+
+.table tbody tr:last-child td {
+    border-bottom: 0;
+}
+
+/* Mobil: rækkerne bliver til kort. Brug .table--stack og data-label="Kolonnenavn" på hver <td> */
+@media (max-width: 720px) {
+    .table--stack thead {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        overflow: hidden;
+        clip: rect(0 0 0 0);
+    }
+
+    .table--stack, .table--stack tbody, .table--stack tr, .table--stack td {
+        display: block;
+        width: 100%;
+    }
+
+    .table--stack tr {
+        padding: var(--sp-3) var(--sp-4);
+        border-bottom: 1px solid var(--hk-line);
+    }
+
+    .table--stack tr:last-child {
+        border-bottom: 0;
+    }
+
+    .table--stack td {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: var(--sp-3);
+        padding: var(--sp-2) 0;
+        border: 0;
+        text-align: right;
+    }
+
+    .table--stack td::before {
+        content: attr(data-label);
+        font-size: var(--fs-sm);
+        font-weight: 500;
+        color: var(--hk-muted);
+        text-align: left;
+    }
+
+    .table--stack td.cell-member {
+        display: block;
+        text-align: left;
+        padding-top: 0;
+    }
+
+    .table--stack td.cell-member::before {
+        display: none;
+    }
+
+    .table--stack .member__name {
+        display: inline-flex;
+        align-items: center;
+        min-height: var(--touch);
+    }
+}
+
+.table-foot {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--sp-3);
+    padding: var(--sp-3) var(--sp-4);
+    border-top: 1px solid var(--hk-line);
+    font-size: var(--fs-sm);
+    color: var(--hk-ink-2);
+}
+
+.pagination {
+    display: flex;
+    gap: var(--sp-1);
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.pagination a {
+    display: inline-grid;
+    place-items: center;
+    min-width: 2.25rem;
+    height: 2.25rem;
+    padding: 0 var(--sp-2);
+    border-radius: var(--r-md);
+    font-size: var(--fs-sm);
+    font-weight: 500;
+    text-decoration: none;
+    color: var(--hk-ink);
+}
+
+.pagination a:hover {
+    background: var(--hk-surface-2);
+}
+
+.pagination [aria-current="page"] {
+    background: var(--hk-ink);
+    color: #fff;
+}
+
+@media (max-width: 720px) {
+    .pagination a {
+        min-width: var(--touch);
+        height: var(--touch);
+    }
+}
+
+.filters {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--sp-2) var(--sp-3);
+}
+
+.filters .search {
+    flex: 1 1 16rem;
+    max-width: 28rem;
+}
+
+.filters .select {
+    width: auto;
+}
+
+/* ---------- 11. Kalender ---------- */
+.calendar__head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--sp-3);
+    margin-bottom: var(--sp-3);
+}
+
+.calendar__title {
+    min-width: 10ch;
+    text-align: center;
+    font-size: var(--fs-xl);
+}
+
+.calendar__grid {
+    display: grid;
+    grid-template-columns: repeat(7, minmax(0, 1fr));
+}
+
+.calendar__dow {
+    padding: var(--sp-2);
+    background: var(--hk-bg);
+    border-bottom: 1px solid var(--hk-line-strong);
+    font-size: var(--fs-sm);
+    font-weight: 600;
+    text-align: center;
+    color: var(--hk-ink-2);
+}
+
+.calendar__day {
+    min-width: 0;
+    min-height: 6.5rem;
+    padding: var(--sp-1) var(--sp-2) var(--sp-2);
+    display: flex;
+    flex-direction: column;
+    gap: var(--sp-1);
+    border-right: 1px solid var(--hk-line);
+    border-bottom: 1px solid var(--hk-line);
+}
+
+.calendar__day:nth-child(7n + 14) {
+    border-right: 0;
+}
+
+.calendar__day--out {
+    background: var(--hk-bg);
+    color: var(--hk-muted);
+}
+
+.calendar__num {
+    display: grid;
+    place-items: center;
+    width: 1.75rem;
+    height: 1.75rem;
+    border-radius: 50%;
+    font-size: var(--fs-sm);
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+}
+
+.calendar__day--today .calendar__num {
+    background: var(--hk-red);
+    color: #fff;
+}
+
+.calendar__event {
+    display: block;
+    min-height: 1.5rem;
+    padding: 2px var(--sp-2);
+    border: 1px solid var(--st-neutral-bd);
+    border-radius: var(--r-sm);
+    background: var(--st-neutral-bg);
+    color: var(--st-neutral-fg);
+    font-size: var(--fs-xs);
+    font-weight: 500;
+    text-decoration: none;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.calendar__event:hover {
+    border-color: var(--hk-ink);
+    color: var(--hk-ink);
+}
+
+.calendar__event--gathering {
+    background: var(--st-info-bg);
+    color: var(--st-info-fg);
+    border-color: var(--st-info-bd);
+}
+
+.calendar__event--tournament {
+    background: var(--st-pending-bg);
+    color: var(--st-pending-fg);
+    border-color: var(--st-pending-bd);
+}
+
+.calendar__event--grading {
+    background: var(--hk-ink);
+    color: #fff;
+    border-color: var(--hk-ink);
+}
+
+.calendar__event--grading:hover {
+    color: #fff;
+}
+
+.calendar__dots {
+    display: none;
+    gap: 3px;
+}
+
+.calendar__dot {
+    width: 0.4rem;
+    height: 0.4rem;
+    border-radius: 50%;
+    background: var(--hk-ink-2);
+}
+
+.calendar__agenda {
+    display: none;
+    margin-top: var(--sp-4);
+}
+
+@media (max-width: 720px) {
+    /* mobil: prikker i cellerne + liste under kalenderen */
+    .calendar__day {
+        min-height: var(--touch);
+        padding: var(--sp-1);
+        align-items: center;
+    }
+
+    .calendar__dow {
+        padding-inline: 0;
+        font-size: var(--fs-xs);
+    }
+
+    .calendar__event {
+        display: none;
+    }
+
+    .calendar__dots {
+        display: flex;
+    }
+
+    .calendar__agenda {
+        display: block;
+    }
+}
+
+/* ---------- 12. Login og Opret konto (uden sidemenu) ---------- */
+.auth-shell {
+    min-height: 100dvh;
+    display: grid;
+    align-content: center;
+    justify-items: center;
+    gap: var(--sp-5);
+    padding: var(--sp-6) var(--sp-4);
+}
+
+.auth-brand {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--sp-2);
+    text-align: center;
+}
+
+.auth-brand .brand-mark {
+    width: 3rem;
+    height: 3rem;
+}
+
+.auth-card {
+    width: 100%;
+    max-width: 25rem;
+}
+
+/* NY – ikke i originalen (Opret konto) */
+.auth-card--wide {
+    max-width: 32rem;
+}
+
+.auth-card .card__body {
+    padding: var(--sp-5);
+}
+
+.auth-note {
+    text-align: center;
+    font-size: var(--fs-sm);
+    color: var(--hk-muted);
+}
+
+/* ---------- 13. Reduceret bevægelse ---------- */
 @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after {
         animation-duration: 0.01ms !important;
