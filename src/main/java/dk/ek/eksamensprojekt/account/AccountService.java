@@ -31,7 +31,7 @@ class AccountService implements AccountApi {
 
     @Transactional
     void register(RegisterRequest request) {
-        if (!VALID_ROLES.contains(request.role())) {
+        if (!SELF_REGISTRABLE_ROLES.contains(request.role())) {
             throw new InvalidInputException("Du kan kun oprette dig som medlem eller som forælder");
         }
 
