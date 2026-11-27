@@ -1,5 +1,6 @@
 import { HomePage } from "../home/home-page.js";
 import { LoginPage } from "../auth/login-page.js";
+import { MemberPage } from "../member/member-page.js";
 
 export function NotFoundPage() {
     const div = document.createElement("div");
@@ -17,4 +18,5 @@ export function NotFoundPage() {
 export const pages = [
     { path: "/", label: "Oversigt", icon: "i-home", nav: true, render: HomePage },
     { path: "/login", label: "Log ind", icon: "i-person", nav: false, render: LoginPage },
+    { path: "/members/:id", label: "Medlem", icon: "i-user", nav: false, render: MemberPage },
 ];

@@ -38,11 +38,11 @@ function markActiveLink() {
 }
 
 // Viser en side i #app
-async function render(pageComponent) {
+async function render(pageComponent, data) {
     const app = document.querySelector("#app");
 
     leaveAuthLayout();
-    const el = await pageComponent(); // siden bygges (nogle venter på data)
+    const el = await pageComponent(data); // siden bygges (nogle venter på data) --- siden får fx { id: "1" }
 
     app.replaceChildren(el); // erstat det gamle indhold med den nye side
 
@@ -69,7 +69,7 @@ renderNav();
 
 // En rute for hver side i listen
 for (const page of pages) {
-    router.on(page.path, () => render(page.render));
+    router.on(page.path,({data}) => render(page.render, data));
 }
 
 // Adresser, der ikke findes, viser "Siden findes ikke"
