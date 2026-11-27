@@ -1,4 +1,6 @@
 // Login-siden. Vises uden sidemenu og topbar.
+import { initLoginForm } from "./auth-login.js";
+
 const SVG_NS = "http://www.w3.org/2000/svg";
 
 // De fields der er i formen
@@ -159,6 +161,8 @@ export function LoginPage() {
     form.append(body);
 
     page.append(buildBrand(), form, buildSignupNote());
+
+    initLoginForm(form, loginAlert); // får formularen til at sende login
 
     return page;
 }
