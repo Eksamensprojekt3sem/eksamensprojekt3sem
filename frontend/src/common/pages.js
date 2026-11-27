@@ -1,4 +1,5 @@
 import { showGreetings } from "../hello/hello-list.js";
+import { MemberPage } from "../member/member-page.js";
 
 export async function HomePage() {
     const div = document.createElement("div");
@@ -40,4 +41,5 @@ export function LoginPage() {
 export const pages = [
     { path: "/", label: "Forside", icon: "i-home", nav: true, render: HomePage },
     { path: "/login", label: "Log ind", icon: "i-person", nav: true, render: LoginPage },
+    { path: "/members/:id", label: "Medlem", icon: "i-user", nav: false, render: MemberPage },
 ];
