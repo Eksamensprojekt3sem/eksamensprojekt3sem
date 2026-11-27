@@ -3,9 +3,10 @@ export function MemberPage({id}) {
     element.className = "member-detail";
 
     const a = document.createElement("a");
-    a.href = "https://www.youtube.com/shorts/qpGfb2JKwIw";
+    a.href = "/members";
     a.className = "btn btn--ghost back-link";
     a.textContent = "← Tilbage til medlemmer";
+    a.setAttribute("data-navigo", "")
 
     const card = document.createElement("div");
     card.className = "card";
