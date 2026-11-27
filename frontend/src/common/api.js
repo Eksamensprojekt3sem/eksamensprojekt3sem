@@ -1,4 +1,5 @@
-import { router } from "./router.js";
+import {router} from "./router.js";
+import {clearUser} from "./session.js";
 
 // En fejl, brugeren kan se.
 // - status: HTTP-status, eller 0 hvis serveren ikke kunne nås
@@ -11,8 +12,9 @@ export class ApiError extends Error {
     }
 }
 
-export function getJSON(url) {
-    return request("GET", url);
+// redirectOn401: sæt til false, hvis 401 ikke skal sende brugeren til login (fx ved GET /api/me ved opstart)
+export function getJSON(url, redirectOn401 = true) {
+    return request("GET", url, {redirectOn401});
 }
 
 // Returnerer JSON-indholdet, eller null hvis svaret er tomt eller ikke er JSON
@@ -26,18 +28,18 @@ async function readJSON(response) {
 
 // redirectOn401: sæt til false, hvis fejlen skal vises på siden (fx ved login)
 export function sendJSON(method, url, body = undefined, redirectOn401 = true) {
-    return request(method, url, { json: body, redirectOn401 });
+    return request(method, url, {json: body, redirectOn401});
 }
 
 // Springs formLogin læser kun formularfelter: sendForm("/api/login", new FormData(form), false)
 export function sendForm(url, formData, redirectOn401 = true) {
-    return request("POST", url, { form: formData, redirectOn401 });
+    return request("POST", url, {form: formData, redirectOn401});
 }
 
-async function request(method, url, { json, form, redirectOn401 = true } = {}) {
+async function request(method, url, {json, form, redirectOn401 = true} = {}) {
     const options = {
         method,
-        headers: { Accept: "application/json" }
+        headers: {Accept: "application/json"}
     };
 
     if (json !== undefined) {
@@ -70,7 +72,9 @@ async function request(method, url, { json, form, redirectOn401 = true } = {}) {
     const data = await readJSON(response);
 
     if (!response.ok) {
+        // Ikke logget ind (eller sessionen er udløbet): glem brugeren, og gå til login
         if (response.status === 401 && redirectOn401) {
+            clearUser();
             router.navigate("/login");
         }
         throw new ApiError(response.status, errorMessage(response.status, data), data?.errors ?? {});

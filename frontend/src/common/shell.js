@@ -1,5 +1,6 @@
-import { sendJSON } from "./api.js";
-import { router } from "./router.js";
+import {sendJSON} from "./api.js";
+import {router} from "./router.js";
+import {clearUser} from "./session.js";
 
 // Elementerne fra index.html, som filen styrer
 const sidebar = document.querySelector("#sidebar");
@@ -30,10 +31,11 @@ document.addEventListener("keydown", (event) => {
     if (event.key === "Escape") setOpen(false);
 });
 
-// "Log ud": send kaldet til serveren, og gå derefter til login-siden
+// "Log ud": send kaldet til serveren, glem brugeren, og gå derefter til login-siden
 async function logOut() {
     try {
         await sendJSON("POST", "/api/logout");
+        clearUser();
         router.navigate("/login");
     } catch (error) {
         // Logud fejlede, så brugeren bliver på siden

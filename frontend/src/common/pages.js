@@ -1,6 +1,6 @@
-import { HomePage } from "../home/home-page.js";
-import { LoginPage } from "../auth/login-page.js";
-import { MemberPage } from "../member/member-page.js";
+import {HomePage} from "../home/home-page.js";
+import {LoginPage} from "../auth/login-page.js";
+import {MemberPage} from "../member/member-page.js";
 
 export function NotFoundPage() {
     const div = document.createElement("div");
@@ -14,9 +14,9 @@ export function NotFoundPage() {
     return div;
 }
 
-// Hver side: sti, tekst i menuen, om den skal vises i menuen, og funktionen der bygger den
+// Hver side: sti, tekst i menuen, om den skal vises i menuen, om den kan ses uden login, og funktionen der bygger den
 export const pages = [
-    { path: "/", label: "Oversigt", icon: "i-home", nav: true, render: HomePage },
-    { path: "/login", label: "Log ind", icon: "i-person", nav: false, render: LoginPage },
-    { path: "/members/:id", label: "Medlem", icon: "i-user", nav: false, render: MemberPage },
+    {path: "/", label: "Oversigt", icon: "i-home", nav: true, render: HomePage},
+    {path: "/login", label: "Log ind", icon: "i-person", nav: false, public: true, render: LoginPage},
+    {path: "/members/:id", label: "Medlem", icon: "i-user", nav: false, render: MemberPage},
 ];
